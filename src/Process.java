@@ -1,13 +1,15 @@
 import java.util.Date;
 
 public class Process {
-    private int id, arrivalTime, executionTime, priority;
+    private static int id = 0;
+    private int processId, arrivalTime, executionTime, priority;
 
     public Process(){
-        id = (int) (new Date().getTime()%100000); //gives us a unique ID based off of the time
+        processId = id;
         arrivalTime = 0;
         executionTime = 0;
-        priority =0;
+        priority = 0;
+        id++;
     }
 
     public Process(int id, int arrivalTime, int executionTime, int priority){
