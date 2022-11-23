@@ -4,20 +4,24 @@ import java.io.IOException;
 import java.util.*;
 
 public class MainEngine {
+    //reads a text file and uses it to dynamically call scheduler() with the appropriate args
     public static void Initializer(String fileName) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         String line = br.readLine();
-        String[] args = line.split(", ");
+        String[] args = line.split(", ");//returns a string array containing the data fields we want
 
+        //initializes array with first int value (amount of processes) as it's argument
         Process[] processes = new Process[Integer.parseInt(args[0])];
-        int quantum = Integer.parseInt(args[1]);
+        int quantum = Integer.parseInt(args[1]); //sets quantum
 
+        //used to keep track of the next empty cell in processes array
         int index = 0;
-        line = br.readLine();
+        line = br.readLine();//moves to the first process line
         Process process;
 
+        //loop until we reach the end of the '.txt' file
         while(line != null){
-            //Splits line into substrings where there is a comma nad a space
+            //Splits line into substrings where there is a comma and a space
             args = line.split(", ");
 
             //gets all of our arguments
@@ -26,29 +30,34 @@ public class MainEngine {
             int executionTime = Integer.parseInt(args[2]);
             int priority = Integer.parseInt(args[3]);
 
+            // make a new process object using the overloaded constructor with our
+            // arguments we got from the txt file
             process = new Process(id, arrivalTime, executionTime, priority);
 
+            //places our new process reference at the proper place in our array
             processes[index] = process;
 
             index++;
             line = br.readLine();
         }
 
+        //calls the scheduler method with the processes array and our appropriate quantum time
         scheduler(processes, quantum);
     }
 
+    //prints the appropriate process schedule to the console using the Round Robin algorithm
     public static void scheduler(Process[] processes, int quantum){
-        LinkedList<Process> schedule = new LinkedList<Process>();//que to represent processes in ready queue
+        LinkedList<Process> schedule = new LinkedList<>();//que to represent processes in ready queue
         LinkedList<Process> toArrive = new LinkedList<>();//queue to allow for dynamic arrival
         int time = 0; //"global" counter for quantum time
 
-        ArrayList<Process> unsorted = new ArrayList<Process>();
+        ArrayList<Process> unsorted = new ArrayList<>();
 
         for (int i = processes.length - 1; i >= 0; i--){
             unsorted.add(processes[i]);
         }
 
-        while (unsorted.isEmpty() == false){
+        while (!unsorted.isEmpty()){
             Process queueNext = unsorted.get(0);
             for (int i = 1; i < unsorted.size(); i++){
                 Process currentProcess = unsorted.get(i); //selects the first object arbitrarily for comparison
@@ -70,7 +79,7 @@ public class MainEngine {
 
         int numRounds = 1;
 
-        while(!(toArrive.isEmpty() != false && schedule.isEmpty() != false)){
+        while(!(toArrive.isEmpty() && schedule.isEmpty())){
             System.out.println("===========Beginning Round Number " + numRounds+ "=========");
             while (!toArrive.isEmpty() && toArrive.get(0).getArrivalTime() >= time){
                 schedule.addLast(toArrive.removeFirst());
