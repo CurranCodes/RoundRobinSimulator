@@ -1,8 +1,40 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 public class MainEngine {
-    public static void Initializer(){
+    public static void Initializer(String fileName) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(fileName));
+        String line = br.readLine();
+        String[] args = line.split(", ");
 
+        Process[] processes = new Process[Integer.parseInt(args[0])];
+        int quantum = Integer.parseInt(args[1]);
+
+        int index = 0;
+        line = br.readLine();
+        Process process;
+
+        while(line != null){
+            //Splits line into substrings where there is a comma nad a space
+            args = line.split(", ");
+
+            //gets all of our arguments
+            int id = Integer.parseInt(args[0]);
+            int arrivalTime = Integer.parseInt(args[1]);
+            int executionTime = Integer.parseInt(args[2]);
+            int priority = Integer.parseInt(args[3]);
+
+            process = new Process(id, arrivalTime, executionTime, priority);
+
+            processes[index] = process;
+
+            index++;
+            line = br.readLine();
+        }
+
+        scheduler(processes, quantum);
     }
 
     public static void scheduler(Process[] processes, int quantum){
@@ -12,7 +44,7 @@ public class MainEngine {
 
         ArrayList<Process> unsorted = new ArrayList<Process>();
 
-        for (int i = processes.length - 1; i >= 0; i++){
+        for (int i = processes.length - 1; i >= 0; i--){
             unsorted.add(processes[i]);
         }
 
@@ -36,14 +68,17 @@ public class MainEngine {
             toArrive.addLast(queueNext);//add selected process to queue
         }
 
-        while(toArrive.isEmpty() != false || schedule.isEmpty() != false){
-            while (toArrive.get(0).getArrivalTime() >= time){
+        int numRounds = 1;
+
+        while(!(toArrive.isEmpty() != false && schedule.isEmpty() != false)){
+            System.out.println("===========Beginning Round Number " + numRounds+ "=========");
+            while (!toArrive.isEmpty() && toArrive.get(0).getArrivalTime() >= time){
                 schedule.addLast(toArrive.removeFirst());
             }
-            System.out.println("Current Time: "+ time);
+            System.out.println("Current Time: "+ time + "  Quantum: " + quantum);
 
             //ready queue is current
-            System.out.print("Ready Queue<<" );
+            System.out.print("Ready Queue<< ");
 
             for (int i = 0; i < schedule.size() -1 ; i++){
                 System.out.print(schedule.get(i).getId() + ", ");
@@ -53,38 +88,47 @@ public class MainEngine {
 
             int loopNum = schedule.size();
 
-            // Current Time: 0
-            // Executing Process With ID: 1
-
-            // Current Time: 4
-            // Process 1 is not done yet, enqueueing...
-            // Process 1 finished
-
             for (int i = 0; i < loopNum; i++){
                 Process current = schedule.removeFirst();
 
-                System.out.println("Current Time: "+ time);
+                System.out.println("Current Time: "+ time + "  Quantum: " + quantum);
                 System.out.println("Next Process is as follows\n" + current + "\n");
 
                 current.setExecutionTime(current.getExecutionTime() - quantum);//runs for set amount of time
+
                 if (current.getExecutionTime() > 0){
                     schedule.addLast(current);
                     time += quantum;
 
-                    System.out.println("Current Time: "+ time);
+                    System.out.println("Current Time: "+ time + "  Quantum: " + quantum);
                     System.out.println(current);
                     System.out.println("Process " + current.getId() + " is not done yet, enqueueing...\n");
                 } else{
                     time += quantum + current.getExecutionTime(); // only runs for remaining time and is not enqueued because it is done!
 
-                    System.out.println("Current Time: "+ time);
+                    System.out.println("Current Time: "+ time + "  Quantum: " + quantum);
                     System.out.println("Process " + current.getId() + " is finished\n");
                 }
             }
+
+            numRounds++;
         }
+
+        System.out.println("============ALL PROCESSES COMPLETE============");
     }
 
     public static void main(String[] args) {
-        System.out.println("woot woot");
+        Scanner s = new Scanner(System.in);
+        System.out.print("Please enter the name of the '.txt' file you'd like to use: ");
+        String fileName = s.nextLine();
+
+        fileName = (fileName.split(".txt"))[0]; //so the user can enter just the name or the name and extension
+
+        try{
+            Initializer(fileName + ".txt");
+        } catch (IOException e){
+            System.out.println("Wrong Filename Given: " + fileName + ".txt");
+            System.out.println(e.getMessage());
+        }
     }
 }

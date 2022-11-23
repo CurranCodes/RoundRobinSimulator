@@ -12,19 +12,19 @@ public class Process {
         id++;
     }
 
-    public Process(int id, int arrivalTime, int executionTime, int priority){
-        this.id = id;
+    public Process(int processId, int arrivalTime, int executionTime, int priority){
+        this.processId = processId;
         this.arrivalTime = arrivalTime;
         this.executionTime = executionTime;
         this.priority = priority;
     }
 
     public int getId() {
-        return id;
+        return processId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.processId = id;
     }
 
     public int getArrivalTime() {
@@ -54,7 +54,7 @@ public class Process {
     @Override
     public String toString(){
         String s = "ID: ";
-        s += id;
+        s += processId;
         s += ", ArrivalTime: " + arrivalTime;
         s += ", ExecutionTime: " + executionTime;
         s += ", Priority: " + priority;
