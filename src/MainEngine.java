@@ -81,7 +81,7 @@ public class MainEngine {
 
         while(!(toArrive.isEmpty() && schedule.isEmpty())){
             System.out.println("===========Beginning Round Number " + numRounds+ "=========");
-            while (!toArrive.isEmpty() && toArrive.get(0).getArrivalTime() >= time){
+            while (!toArrive.isEmpty() && toArrive.get(0).getArrivalTime() <= time){
                 schedule.addLast(toArrive.removeFirst());
             }
             System.out.println("Current Time: "+ time + "  Quantum: " + quantum);
@@ -95,29 +95,26 @@ public class MainEngine {
 
             System.out.println(schedule.getLast().getId() + " >>\n");
 
-            int loopNum = schedule.size();
 
-            for (int i = 0; i < loopNum; i++){
-                Process current = schedule.removeFirst();
+            Process current = schedule.removeFirst();
+
+            System.out.println("Current Time: "+ time + "  Quantum: " + quantum);
+            System.out.println("Next Process is as follows\n" + current + "\n");
+
+            current.setExecutionTime(current.getExecutionTime() - quantum);//runs for set amount of time
+
+            if (current.getExecutionTime() > 0){
+                schedule.addLast(current);
+                time += quantum;
 
                 System.out.println("Current Time: "+ time + "  Quantum: " + quantum);
-                System.out.println("Next Process is as follows\n" + current + "\n");
+                System.out.println(current);
+                System.out.println("Process " + current.getId() + " is not done yet, enqueueing...\n");
+            } else{
+                time += quantum + current.getExecutionTime(); // only runs for remaining time and is not enqueued because it is done!
 
-                current.setExecutionTime(current.getExecutionTime() - quantum);//runs for set amount of time
-
-                if (current.getExecutionTime() > 0){
-                    schedule.addLast(current);
-                    time += quantum;
-
-                    System.out.println("Current Time: "+ time + "  Quantum: " + quantum);
-                    System.out.println(current);
-                    System.out.println("Process " + current.getId() + " is not done yet, enqueueing...\n");
-                } else{
-                    time += quantum + current.getExecutionTime(); // only runs for remaining time and is not enqueued because it is done!
-
-                    System.out.println("Current Time: "+ time + "  Quantum: " + quantum);
-                    System.out.println("Process " + current.getId() + " is finished\n");
-                }
+                System.out.println("Current Time: "+ time + "  Quantum: " + quantum);
+                System.out.println("Process " + current.getId() + " is finished\n");
             }
 
             numRounds++;

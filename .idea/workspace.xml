@@ -76,7 +76,9 @@
       <updated>1669146887277</updated>
       <workItem from="1669146888491" duration="9603000" />
       <workItem from="1669157578662" duration="2641000" />
-      <workItem from="1669227359925" duration="2169000" />
+      <workItem from="1669227359925" duration="2289000" />
+      <workItem from="1669751727793" duration="297000" />
+      <workItem from="1669752146592" duration="1260000" />
     </task>
     <task id="LOCAL-00001" summary="Created project">
       <created>1669146940779</created>
@@ -120,7 +122,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669227446447</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="V1 of project complete">
+      <created>1669234685567</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1669234685567</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -144,15 +153,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="V1 of project complete" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/MainEngine.java</url>
-          <line>27</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
         <watch expression="processes[0]" />
