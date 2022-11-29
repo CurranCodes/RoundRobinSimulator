@@ -81,6 +81,8 @@ public class MainEngine {
 
         while(!(toArrive.isEmpty() && schedule.isEmpty())){
             System.out.println("===========Beginning Round Number " + numRounds+ "=========");
+
+            //adds any processes that arrive to the end of the ready queue
             while (!toArrive.isEmpty() && toArrive.get(0).getArrivalTime() <= time){
                 schedule.addLast(toArrive.removeFirst());
             }
